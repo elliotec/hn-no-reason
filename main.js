@@ -21,24 +21,29 @@ function fetchStories(data) {
 function renderStories(stories) {
   return stories.map((story) => {
     const html = `
-      <div id='${story.id}'>
-        <a href='${story.url}'>
-          <h3 class='story'>
-            ${story.title}  - <span class='user'>${story.by}</span>
-          </h3>
-        </a>
-        Score: <span class='score'> ${story.score}   </span>
-        Comments:
-          <span onclick="showComments('${story.kids}')" class='comments'>
-            ${story.descendants}
+      <div class='story' id='${story.id}'>
+        <h3 class='title'><a href='${story.url}'>${story.title}</a></h3>
+        <span class='score'> ${story.score} </span> points by
+        <span class='story-by'> ${story.by}</span>
+        ${!story.kids ? '' : `
+          --- <span onclick="fetchComments('${story.kids}')" class='comments'>
+             Show ${story.descendants} comments
           </span>
+        ` }
       </div>
     `
     document.getElementById('hn').insertAdjacentHTML('beforeend', html)
   })
 }
 
-function showComments(kids) {
+// function toggleAllComments(storyId) {
+//   const allComments = document.getElementById(commentId)
+//   const toggle = document.getElementById(`toggle-${commentId}`)
+//   comment.style.display = (comment.style.display === 'block') ? 'none' : 'block'
+//   toggle.innerHTML = (toggle.innerHTML === '[ - ]') ? '[ + ]' : '[ - ]'
+// }
+
+function fetchComments(kids) {
   const commentIds = kids.split(',')
   const allComments = commentIds.map((commentId) => {
     const commentUrl = `${hnBaseUrl}/item/${commentId}.json`
@@ -49,22 +54,35 @@ function showComments(kids) {
   return Promise.all(allComments).then((comments) => renderComments(comments))
 }
 
+function toggleComment(commentId) {
+  const comment = document.getElementById(commentId)
+  const toggle = document.getElementById(`toggle-${commentId}`)
+  comment.style.display = (comment.style.display === 'block') ? 'none' : 'block'
+  toggle.innerHTML = (toggle.innerHTML === '[ - ]') ? '[ + ]' : '[ - ]'
+}
+
 function renderComments(comments) {
-  return comments.map((comment) => {
-    console.log(comment)
-    const html = `
-      <div id=${comment.id} class='comment'>
-        <span class='user'>${comment.by} - </span>
-        <p> ${comment.text}</p>
-        ${ comment.kids ?
-          `<span onclick="showComments('${comment.kids}')" class='comments'>
-            show comments
-          </span>` : ''
-        }
-      </div>
-    `
-    document.getElementById(comment.parent).insertAdjacentHTML('beforeend', html)
-  })
+    return comments.map((comment) => {
+      const html = comment.deleted || comment.dead ? '' : `
+        <div class='comment'>
+          <span
+            onclick='toggleComment("${comment.id}")'
+            href='#'
+            id='toggle-${comment.id}'
+            class='toggle-comment'
+          >[ - ]</span>
+          <span class='comment-by'>${comment.by}</span>
+          <div id=${comment.id} class='comment-text' style='display:block;'>
+            ${comment.text}
+          </div>
+        </div>
+      `
+      if (comment.parent) {
+        document.getElementById(comment.parent).insertAdjacentHTML('beforeend', html)
+      }
+      if (comment.kids) return fetchComments(comment.kids.toString())
+    }
+  )
 }
 
 fetchTopStories()

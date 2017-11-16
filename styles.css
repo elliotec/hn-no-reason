@@ -1,0 +1,58 @@
+body {
+  background-color: #333;
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #ecf0f1;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: #27ae60;
+}
+a:hover {
+  color: #2ecc71;
+}
+h1 {
+  text-align: center;
+}
+h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.main {
+  margin: 0 auto;
+}
+.score {
+  color: #c0392b;
+}
+.story {
+  margin: 8px;
+  padding: 16px;
+  border: 1px solid black;
+}
+.comments {
+  color: #2980b9;
+  cursor: pointer;
+  display: inline-block;
+}
+.comments:hover {
+  color: #3498db;
+}
+.story-by,
+.comment-by {
+  color: #bdc3c7;
+  font-size: 18px;
+}
+.comment {
+  border: 1px solid #7f8c8d;
+  margin-top: 16px;
+  padding: 8px;
+}
+.comment-text {
+  padding: 8px;
+  overflow-x: scroll;
+}
+.toggle-comment {
+  cursor: pointer;
+}
