@@ -23,40 +23,22 @@
     .comments {
       color: green;
     }
+    .user {
+      color: black;
+      font-size: 10px;
+    }
+    a { text-decoration: none; }
+    .comment {
+      margin-left: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="main">
     <h1>Hello this is lite</h1>
-    <div id='hn'></div>
+    <div id='hn'>
+    </div>
   </div>
-<script type='text/javascript'>
-  const url = 'https://hacker-news.firebaseio.com/v0/topstories.json'
-  fetch(url).then(response => response.json()).then(data => fetchItems(data))
-
-  function fetchItems(data) {
-    const topTenItems = data.slice(0, 9)
-    console.log(topTenItems)
-    return topTenItems.map(itemId => {
-      const itemUrl = `https://hacker-news.firebaseio.com/v0/item/${itemId}.json`
-      fetch(itemUrl)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data)
-          const title = JSON.stringify(data.title)
-          const url = JSON.stringify(data.url)
-          const score = JSON.stringify(data.score)
-          const comments = JSON.stringify(data.descendants)
-          const type = data.type
-          const html = `<a href=${url}>
-            <h3>${title}</h3>
-            </a>
-            Score:<span class='score'> ${score}   </span>
-            Comments: <span class='comments'> ${comments}</span>`
-          document.getElementById('hn').insertAdjacentHTML('beforeend', html)
-        })
-    })
-  }
-</script>
+  <script type='text/javascript' src='main.js'></script>
 </body>
 </html>
