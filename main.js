@@ -1,3 +1,4 @@
+const state = {}
 const hnBaseUrl = 'https://hacker-news.firebaseio.com/v0'
 
 function fetchTopStories() {
@@ -15,7 +16,10 @@ function fetchStories(data) {
       .then((response) => response.json())
       .then((story) => story)
   })
-  return Promise.all(storyIds).then((stories) => renderStories(stories))
+  return Promise.all(storyIds).then((stories) => {
+    state.stories = stories
+    renderStories(stories)
+  })
 }
 
 function renderStories(stories) {
@@ -26,24 +30,21 @@ function renderStories(stories) {
         <span class='score'> ${story.score} </span> points by
         <span class='story-by'> ${story.by}</span>
         ${!story.kids ? '' : `
-          --- <span onclick="fetchComments('${story.kids}')" class='comments'>
-             Show ${story.descendants} comments
+          <span
+            onclick="fetchOrToggleComments('${story.kids}','${story.id}')"
+            class='comments '
+          >
+             Toggle ${story.descendants} comments
           </span>
-        ` }
+        `}
+        <div id='comments-${story.id}' style='display: block;' ><div>
       </div>
     `
     document.getElementById('hn').insertAdjacentHTML('beforeend', html)
   })
 }
 
-// function toggleAllComments(storyId) {
-//   const allComments = document.getElementById(commentId)
-//   const toggle = document.getElementById(`toggle-${commentId}`)
-//   comment.style.display = (comment.style.display === 'block') ? 'none' : 'block'
-//   toggle.innerHTML = (toggle.innerHTML === '[ - ]') ? '[ + ]' : '[ - ]'
-// }
-
-function fetchComments(kids) {
+function fetchComments(kids, storyId) {
   const commentIds = kids.split(',')
   const allComments = commentIds.map((commentId) => {
     const commentUrl = `${hnBaseUrl}/item/${commentId}.json`
@@ -51,7 +52,24 @@ function fetchComments(kids) {
       .then((response) => response.json())
       .then((comment) => comment)
   })
-  return Promise.all(allComments).then((comments) => renderComments(comments))
+
+  return Promise.all(allComments).then((comments) => {
+    state[storyId] = comments
+    renderComments(comments, storyId)
+  })
+}
+
+function fetchOrToggleComments(kids, storyId) {
+  function toggleAllComments(storyId) {
+    const allComments = document.getElementById(`comments-${storyId}`)
+    allComments.style.display = (allComments.style.display === 'block') ? 'none' : 'block'
+  }
+
+  if (state[storyId]) {
+    toggleAllComments(storyId)
+  } else {
+    fetchComments(kids, storyId)
+  }
 }
 
 function toggleComment(commentId) {
@@ -61,7 +79,7 @@ function toggleComment(commentId) {
   toggle.innerHTML = (toggle.innerHTML === '[ - ]') ? '[ + ]' : '[ - ]'
 }
 
-function renderComments(comments) {
+function renderComments(comments, storyId) {
     return comments.map((comment) => {
       const html = comment.deleted || comment.dead ? '' : `
         <div class='comment'>
@@ -77,10 +95,12 @@ function renderComments(comments) {
           </div>
         </div>
       `
-      if (comment.parent) {
+      if (comment.parent == storyId) {
+        document.getElementById(`comments-${storyId}`).insertAdjacentHTML('beforeend', html)
+      } else {
         document.getElementById(comment.parent).insertAdjacentHTML('beforeend', html)
       }
-      if (comment.kids) return fetchComments(comment.kids.toString())
+      if (comment.kids) return fetchComments(comment.kids.toString(), storyId)
     }
   )
 }
