@@ -3,13 +3,64 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A Hacker News Reader For No Reason</title>
-  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <style type="text/css">
+    body {
+      background-color: #222;
+      font-family: "Helvetica", Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.4;
+      color: #ecf0f1;
+      margin: 0;
+    }
+    a { text-decoration: none; color: #2ecc71; }
+    a:hover { color: #27ae60; }
+    h2 { text-align: center; }
+    h3 { margin: 0; font-size: 22px; }
+    .main { margin: 0 auto; }
+    .score {
+      font-size: 20px;
+      color: #f1c40f;
+      margin-right: 4px;
+    }
+    .story {
+      margin: 4px;
+      padding: 8px;
+      border: 1px solid #444;
+    }
+    .comments {
+      color: #1abc9c;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    @media (min-width: 700px) {
+      .toggle-view{ display: inline; }
+    }
+    .comments:hover { color: #16a085; }
+    .story-by,
+    .comment-by {
+      font-size: 20px;
+      color: #7f8c8d;
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+    .story-by:hover,
+    .comment-by:hover{ color: #bdc3c7; }
+    .comment {
+      padding: 0 4px;
+      border: 1px solid #7f8c8d;
+      margin-top: 4px;
+    }
+    .comment-text { padding: 8px; overflow-x: scroll; }
+    .toggle-comment { color: #1abc9c; cursor: pointer; }
+    .toggle-comment:hover { color: #16a085; }
+    .hnLink { color: #e67e22; }
+    .hnLink:hover { color: #d35400; }
+  </style>
 </head>
 <body>
   <div class="main">
     <h2>A Hacker News Reader For No Reason</h2>
-    <div id="hn">
-    </div>
+    <div id="hn"></div>
   </div>
   <script type="text/javascript" src="main.js"></script>
 </body>

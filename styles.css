@@ -10,27 +10,21 @@ a {
   text-decoration: none;
   color: #2ecc71;
 }
-a:hover {
-  color: #27ae60;
-}
-h2 {
-  text-align: center;
-}
+a:hover { color: #27ae60; }
+h2 { text-align: center; }
 h3 {
   margin: 0;
   font-size: 22px;
 }
-.main {
-  margin: 0 auto;
-}
+.main { margin: 0 auto; }
 .score {
   font-size: 20px;
   color: #f1c40f;
   margin-right: 4px;
 }
 .story {
-  margin: 8px;
-  padding: 16px;
+  margin: 4px;
+  padding: 8px;
   border: 1px solid #444;
 }
 .comments {
@@ -38,9 +32,10 @@ h3 {
   cursor: pointer;
   font-size: 20px;
 }
-.comments:hover {
-  color: #16a085;
+@media (min-width: 700px) {
+  .toggle-view{ display: inline; }
 }
+.comments:hover { color: #16a085; }
 .story-by,
 .comment-by {
   font-size: 20px;
@@ -49,29 +44,20 @@ h3 {
   margin-right: 4px;
 }
 .story-by:hover,
-.comment-by:hover{
-  color: #bdc3c7;
-}
+.comment-by:hover{ color: #bdc3c7; }
 .comment {
-  padding: 4px;
+  padding: 0 4px;
   border: 1px solid #7f8c8d;
-  margin-top: 16px;
+  margin-top: 4px;
 }
 .comment-text {
-  padding: 4px;
-  margin-left: 8px;
+  padding: 8px;
   overflow-x: scroll;
 }
 .toggle-comment {
   color: #1abc9c;
   cursor: pointer;
 }
-.toggle-comment:hover {
-  color: #16a085;
-}
-.hnLink {
-  color: #e67e22;
-}
-.hnLink:hover {
-  color: #d35400;
-}
+.toggle-comment:hover { color: #16a085; }
+.hnLink { color: #e67e22; }
+.hnLink:hover { color: #d35400; }
