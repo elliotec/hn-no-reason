@@ -10,8 +10,7 @@
       font-size: 18px;
       line-height: 1.4;
       color: #ecf0f1;
-      margin: 0;
-      margin-top: 65px;
+      margin: 65px 0;
     }
     .navigation {
       background-color: #333;
@@ -47,13 +46,11 @@
       padding: 8px;
       border: 1px solid #444;
     }
+    .storyText { margin-top: 8px; }
     .comments {
       color: #1abc9c;
       cursor: pointer;
       font-size: 20px;
-    }
-    @media (min-width: 700px) {
-      .toggle-view{ display: inline; }
     }
     .comments:hover { color: #16a085; }
     .story-by,
@@ -75,13 +72,18 @@
     .toggle-comment:hover { color: #16a085; }
     .hnLink { color: #e67e22; }
     .hnLink:hover { color: #d35400; }
+    @media (min-width: 720px) {
+      .toggle-view{ display: inline; }
+      .main { max-width: 80%; }
+    }
+    @media (max-width: 1000px) {
+      .main { max-width: 100%; }
+    }
   </style>
 </head>
 <body>
   <div class="main">
-    <header class="navigation">
-      <a href="/">{ elliotec }</a>
-    </header>
+    <header class="navigation"><a href="/">{ elliotec }</a></header>
     <h2>A Hacker News Reader For No Reason</h2>
     <div id="hn"></div>
   </div>
@@ -91,8 +93,7 @@
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-46276194-3', 'elliotec.com');
-    ga('send', 'pageview');
+    ga('create', 'UA-46276194-3', 'elliotec.com'); ga('send', 'pageview');
   </script>
 </body>
 </html>

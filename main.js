@@ -1,17 +1,16 @@
 const state = {}
 const hnBaseUrl = 'https://hacker-news.firebaseio.com/v0'
-
-fetchTopStories()
-
 function fetchTopStories() {
   const topStoriesUrl = `${hnBaseUrl}/topstories.json`
-  return fetch(topStoriesUrl).then(response => response.json()).then((data) => fetchStories(data))
+  return fetch(topStoriesUrl).then(response => response.json())
+    .then((data) => fetchStories(data))
 }
 function fetchStories(data) {
   const topStories = data.slice(0, 29)
   const storyIds = topStories.map((storyId) => {
     const storyUrl = `${hnBaseUrl}/item/${storyId}.json`
-    return fetch(storyUrl).then((response) => response.json()).then((story) => story)
+    return fetch(storyUrl).then((response) => response.json())
+      .then((story) => story)
   })
   return Promise.all(storyIds).then((stories) => {
     state.stories = stories
@@ -26,8 +25,7 @@ function renderStories(stories) {
       <div class='story' id='${story.id}'>
         <h3 class='title'>
           ${story.url ? `<a href='${story.url}' target='_blank'>${story.title}</a>`
-            : `<a href='' onclick="toggleStoryText('${story.id}')" >${story.title}</a>`
-          }
+            : `<a href='javascript:void(0)' onclick="toggleStoryText('${story.id}')" >${story.title}</a>`}
         </h3>
         <span class='score'> ${story.score} </span> points by
         <a href='${userUrl}' target='_blank' class='story-by'> ${story.by}</a>
@@ -41,7 +39,8 @@ function renderStories(stories) {
           <a href='${storyItemUrl}' target='_blank' class='hnLink'>[view on HN]</a>
         </div>
         ${story.text ?
-          `<p class='storyText' id='storyText-${story.id}' style='display:none;'> ${story.text} </p>` : '' }
+          `<div class='storyText' id='storyText-${story.id}' style='display:none;'>
+            ${story.text} </div>` : '' }
         <div id='comments-${story.id}' style='display: block;'></div>
       </div> `
     document.getElementById('hn').insertAdjacentHTML('beforeend', html)
@@ -82,7 +81,7 @@ function renderComments(comments, storyId) {
       <div class='comment'>
         <span
           onclick='toggleComment("${comment.id}")'
-          href='#'
+          href='javascript:void(0)'
           id='toggle-${comment.id}'
           class='toggle-comment'
         >[ - ]</span>
@@ -97,3 +96,4 @@ function renderComments(comments, storyId) {
     if (comment.kids) return fetchComments(comment.kids.toString(), storyId)
   })
 }
+fetchTopStories()
